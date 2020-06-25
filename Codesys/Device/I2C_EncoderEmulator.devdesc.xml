@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DeviceDescription xmlns="http://www.3s-software.com/schemas/DeviceDescription-1.0.xsd" xmlns:ts="http://www.3s-software.com/schemas/TargetSettings-0.1.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Types namespace="local"></Types>
+  <Strings namespace="local">
+    <Language lang="en"></Language>
+  </Strings>
+  <Files namespace="local">
+    <Language lang="en">
+    </Language>
+  </Files>
+  <Device hideInCatalogue="false">
+    <DeviceIdentification>
+      <Type>500</Type>
+      <Id>0003 0002</Id>
+      <Version>1.0.0.0</Version>
+    </DeviceIdentification>
+    <DeviceInfo>
+      <Name name="local:ModelName">I2C Encoder Emulator</Name>
+      <Description name="local:DeviceDescription">This is a encoder simulator using a Arduino.</Description>
+      <Vendor name="local:VendorName">Open Source</Vendor>
+      <OrderNumber>-</OrderNumber>
+      <Icon name="local:Icon">icon.ico</Icon>
+    </DeviceInfo>
+    <Connector moduleType="500" interface="Raspberry.I2C" role="child" explicit="false" connectorId="1" hostpath="-1">
+      <InterfaceName name="local:I2C">I2C devices</InterfaceName>
+      <Slot count="1" allowEmpty="false"></Slot>
+      <DriverInfo needsBusCycle="false">
+        <RequiredLib libname="I2C_EncoderEmulator" vendor="Open Source" version="1.0.0.0" identifier="I2C_EncoderEmulator">
+          <FBInstance basename="$(DeviceName)" fbname="I2CEncoderEmulator">
+            <Initialize methodName="Initialize" />
+            <CyclicCall methodname="AfterReadInputs" task="#buscycletask" whentocall="afterReadInputs" />
+            <CyclicCall methodname="BeforeWriteOutputs" task="#buscycletask" whentocall="beforeWriteOutputs" />
+          </FBInstance>
+        </RequiredLib>
+      </DriverInfo>
+      <HostParameterSet>
+        <Parameter ParameterId="3000" type="std:USINT">
+          <Attributes channel="none" download="true" functional="false" onlineaccess="read" />
+          <Default>0</Default>
+          <Name name="local:I2CAddress">I2C Address</Name>
+          <Description name="local:I2CAddressDesc">Address of the device</Description>
+        </Parameter>
+        <Parameter ParameterId="2000" type="std:BYTE">
+          <Attributes channel="output" download="true" functional="false" offlineaccess="write" onlineaccess="readwrite" />
+          <Default>0</Default>
+          <Name name="local:Command">Command</Name>
+          <Description name="local:CommandDesc">0= stop, 1= forward, 2= backward</Description>
+        </Parameter>
+        <Parameter ParameterId="2001" type="std:UINT">
+          <Attributes channel="output" download="true" functional="false" offlineaccess="write" onlineaccess="readwrite" />
+          <Default>1000</Default>
+          <Name name="local:RPM">RPM</Name>
+          <Description name="local:RPMDesc">RPM</Description>
+        </Parameter>
+        <Parameter ParameterId="2002" type="std:UINT">
+          <Attributes channel="output" download="true" functional="false" offlineaccess="write" onlineaccess="readwrite" />
+          <Default>1024</Default>
+          <Name name="local:Resolucao">Resolucao Encoder</Name>
+          <Description name="local:RPMDesc">resolucao (pulsos/volta)</Description>
+        </Parameter>
+      </HostParameterSet>
+    </Connector>
+  </Device>
+</DeviceDescription>
